@@ -5,15 +5,16 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"os"
+	"path/filepath"
+	"runtime"
+
 	log "github.com/cihub/seelog"
 	"github.com/elastic/go-ucfg"
 	"github.com/elastic/go-ucfg/cfgutil"
 	cfgflag "github.com/elastic/go-ucfg/flag"
 	"github.com/elastic/go-ucfg/yaml"
 	"github.com/xirtah/gopa-framework/core/util/file"
-	"os"
-	"path/filepath"
-	"runtime"
 )
 
 // IsStrictPerms returns true if strict permission checking on config files is

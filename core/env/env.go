@@ -18,18 +18,19 @@ package env
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
+	"time"
+
 	log "github.com/cihub/seelog"
 	"github.com/elastic/go-ucfg"
 	"github.com/elastic/go-ucfg/yaml"
 	"github.com/xirtah/gopa-framework/core/config"
 	"github.com/xirtah/gopa-framework/core/util"
-	"os"
-	"path/filepath"
-	"strings"
-	"time"
 )
 
-// Env is environment object of gopa
+// Env is environment object of an application
 type Env struct {
 
 	// static configs
@@ -202,4 +203,8 @@ func EmptyEnv() *Env {
 
 func GetStartTime() time.Time {
 	return startTime
+}
+
+func (env *Env) GetAppName() string {
+	return env.SystemConfig.ClusterConfig.Name
 }
