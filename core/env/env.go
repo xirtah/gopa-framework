@@ -52,7 +52,7 @@ func Environment(configFile string) *Env {
 	env.SystemConfig = &sysConfig
 
 	var err error
-	env.RuntimeConfig, err = env.loadRuntimeConfig()
+	env.RuntimeConfig, err = env.loadRuntimeConfig(configFile)
 	if err != nil {
 		log.Error(err)
 		panic(err)
@@ -97,9 +97,10 @@ var (
 
 func loadSystemConfig(cfgFile string) config.SystemConfig {
 	cfg := defaultSystemConfig
-	cfg.ConfigFile = cfgFile
-	if util.IsExist(cfgFile) {
-		config, err := yaml.NewConfigWithFile(cfgFile, ucfg.PathSep("."))
+	cfgFilePath := getConfigPath(cfgFile)
+	cfg.ConfigFile = cfgFilePath
+	if util.IsExist(cfgFilePath) {
+		config, err := yaml.NewConfigWithFile(cfgFilePath, ucfg.PathSep("."))
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -120,11 +121,23 @@ var (
 	defaultRuntimeConfig = config.RuntimeConfig{}
 )
 
-func (env *Env) loadRuntimeConfig() (*config.RuntimeConfig, error) {
+func getConfigPath(cfgFile string) string {
+	ex, err := os.Executable()
+	if err != nil {
+		panic(err)
+	}
+	exPath := filepath.Dir(ex)
+	return exPath + "/" + cfgFile
+}
 
-	var configFile = "./gopa.yml"
+func (env *Env) loadRuntimeConfig(cfgFile string) (*config.RuntimeConfig, error) {
+
+	var configFile string
+	//Use system config file definition if it already exists
 	if env.SystemConfig != nil && len(env.SystemConfig.ConfigFile) > 0 {
 		configFile = env.SystemConfig.ConfigFile
+	} else {
+		configFile = getConfigPath(cfgFile)
 	}
 
 	filename, _ := filepath.Abs(configFile)
