@@ -23,6 +23,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/xirtah/gopa-framework/lib/fs"
+
 	"github.com/elastic/go-ucfg"
 	"github.com/elastic/go-ucfg/yaml"
 	"github.com/xirtah/gopa-framework/core/config"
@@ -99,7 +101,7 @@ var (
 
 func loadSystemConfig(cfgFile string) config.SystemConfig {
 	cfg := defaultSystemConfig
-	cfgFilePath := getConfigPath(cfgFile)
+	cfgFilePath := fs.GetFullPath(cfgFile)
 	cfg.ConfigFile = cfgFilePath
 	if util.IsExist(cfgFilePath) {
 		config, err := yaml.NewConfigWithFile(cfgFilePath, ucfg.PathSep("."))
@@ -123,15 +125,6 @@ var (
 	defaultRuntimeConfig = config.RuntimeConfig{}
 )
 
-func getConfigPath(cfgFile string) string {
-	ex, err := os.Executable()
-	if err != nil {
-		panic(err)
-	}
-	exPath := filepath.Dir(ex)
-	return exPath + "/" + cfgFile
-}
-
 func (env *Env) loadRuntimeConfig(cfgFile string) (*config.RuntimeConfig, error) {
 
 	var configFile string
@@ -139,7 +132,7 @@ func (env *Env) loadRuntimeConfig(cfgFile string) (*config.RuntimeConfig, error)
 	if env.SystemConfig != nil && len(env.SystemConfig.ConfigFile) > 0 {
 		configFile = env.SystemConfig.ConfigFile
 	} else {
-		configFile = getConfigPath(cfgFile)
+		configFile = fs.GetFullPath(cfgFile)
 	}
 
 	filename, _ := filepath.Abs(configFile)

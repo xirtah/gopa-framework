@@ -21,6 +21,8 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/xirtah/gopa-framework/lib/fs"
+
 	"github.com/ryanuber/go-glob"
 	"github.com/xirtah/gopa-framework/core/config"
 	"github.com/xirtah/gopa-framework/core/env"
@@ -50,9 +52,10 @@ func SetLogging(env *env.Env, logLevel string, logFile string) {
 
 	if env != nil {
 		envLevel := strings.ToLower(env.SystemConfig.LoggingConfig.LogLevel)
-		if env.SystemConfig != nil {
-			file = env.SystemConfig.PathConfig.Log + "/" + env.GetAppName() + " .log"
-		}
+		//TODO: Reconsider how this will work, what if the path given is a relative path?
+		// if env.SystemConfig != nil {
+		// 	file = env.SystemConfig.PathConfig.Log + "/" + env.GetAppName() + " .log"
+		// }
 		if len(envLevel) > 0 {
 			loggingConfig.LogLevel = envLevel
 		}
@@ -69,9 +72,10 @@ func SetLogging(env *env.Env, logLevel string, logFile string) {
 
 	//finally check filename
 	if file == "" {
-		file = "./log/" + env.GetAppName() + ".log"
+		file = fs.GetFullPath("log/" + env.GetAppName() + ".log")
 	}
 
+	//Still needed? considering at the top if loggingconfig is null it sets it up?
 	if loggingConfig.FuncFilterPattern == "" {
 		loggingConfig.FuncFilterPattern = "*"
 	}
