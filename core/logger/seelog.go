@@ -21,10 +21,10 @@ import (
 	"strings"
 	"sync"
 
-	log "github.com/cihub/seelog"
 	"github.com/ryanuber/go-glob"
 	"github.com/xirtah/gopa-framework/core/config"
 	"github.com/xirtah/gopa-framework/core/env"
+	log "github.com/xirtah/gopa-framework/core/logger/seelog"
 	"github.com/xirtah/gopa-framework/core/util"
 )
 
@@ -49,7 +49,7 @@ func SetLogging(env *env.Env, logLevel string, logFile string) {
 	l.Unlock()
 
 	if env != nil {
-		envLevel := strings.ToLower(env.LoggingLevel)
+		envLevel := strings.ToLower(env.SystemConfig.LoggingConfig.LogLevel)
 		if env.SystemConfig != nil {
 			file = env.SystemConfig.PathConfig.Log + "/" + env.GetAppName() + " .log"
 		}

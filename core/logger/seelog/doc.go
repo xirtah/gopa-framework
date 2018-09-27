@@ -33,9 +33,9 @@ To create a logger, use one of the following constructors:
   func LoggerFromConfigAsString
   func LoggerFromWriterWithMinLevel
   func LoggerFromWriterWithMinLevelAndFormat
-  func LoggerFromCustomReceiver (check https://github.com/cihub/seelog/wiki/Custom-receivers)
+  func LoggerFromCustomReceiver (check https://github.com/xirtah/gopa-framework/core/logger/seelog/wiki/Custom-receivers)
 Example:
-  import log "github.com/cihub/seelog"
+  import log "github.com/xirtah/gopa-framework/core/logger/seelog"
 
   func main() {
       logger, err := log.LoggerFromConfigAsFile("seelog.xml")
@@ -53,7 +53,7 @@ Usage
 
 Logger created using one of the LoggerFrom* funcs can be used directly by calling one of the main log funcs.
 Example:
-  import log "github.com/cihub/seelog"
+  import log "github.com/xirtah/gopa-framework/core/logger/seelog"
 
   func main() {
       logger, err := log.LoggerFromConfigAsFile("seelog.xml")
@@ -69,7 +69,7 @@ Having loggers as variables is convenient if you are writing your own package wi
 several loggers with different options.
 But for most standalone apps it is more convenient to use package level funcs and vars. There is a package level
 var 'Current' made for it. You can replace it with another logger using 'ReplaceLogger' and then use package level funcs:
-  import log "github.com/cihub/seelog"
+  import log "github.com/xirtah/gopa-framework/core/logger/seelog"
 
   func main() {
       logger, err := log.LoggerFromConfigAsFile("seelog.xml")
@@ -96,12 +96,12 @@ Main seelog point is to configure logger via config files and not the code.
 The configuration is read by LoggerFrom* funcs. These funcs read xml configuration from different sources and try
 to create a logger using it.
 
-All the configuration features are covered in detail in the official wiki: https://github.com/cihub/seelog/wiki.
+All the configuration features are covered in detail in the official wiki: https://github.com/xirtah/gopa-framework/core/logger/seelog/wiki.
 There are many sections covering different aspects of seelog, but the most important for understanding configs are:
-    https://github.com/cihub/seelog/wiki/Constraints-and-exceptions
-    https://github.com/cihub/seelog/wiki/Dispatchers-and-receivers
-    https://github.com/cihub/seelog/wiki/Formatting
-    https://github.com/cihub/seelog/wiki/Logger-types
+    https://github.com/xirtah/gopa-framework/core/logger/seelog/wiki/Constraints-and-exceptions
+    https://github.com/xirtah/gopa-framework/core/logger/seelog/wiki/Dispatchers-and-receivers
+    https://github.com/xirtah/gopa-framework/core/logger/seelog/wiki/Formatting
+    https://github.com/xirtah/gopa-framework/core/logger/seelog/wiki/Logger-types
 After you understand these concepts, check the 'Reference' section on the main wiki page to get the up-to-date
 list of dispatchers, receivers, formats, and logger types.
 
@@ -144,7 +144,7 @@ the 'main.go' file. So, this is basically a demonstration of configuration of mo
 
   package main
 
-  import log "github.com/cihub/seelog"
+  import log "github.com/xirtah/gopa-framework/core/logger/seelog"
 
   func main() {
       defer log.Flush()
@@ -169,7 +169,7 @@ the 'main.go' file. So, this is basically a demonstration of configuration of mo
 
 Examples
 
-To learn seelog features faster you should check the examples package: https://github.com/cihub/seelog-examples
+To learn seelog features faster you should check the examples package: https://github.com/xirtah/gopa-framework/core/logger/seelog-examples
 It contains many example configs and usecases.
 */
 package seelog

@@ -9,11 +9,11 @@ import (
 	"path/filepath"
 	"runtime"
 
-	log "github.com/cihub/seelog"
 	"github.com/elastic/go-ucfg"
 	"github.com/elastic/go-ucfg/cfgutil"
 	cfgflag "github.com/elastic/go-ucfg/flag"
 	"github.com/elastic/go-ucfg/yaml"
+	log "github.com/xirtah/gopa-framework/core/logger/seelog"
 	"github.com/xirtah/gopa-framework/core/util/file"
 )
 

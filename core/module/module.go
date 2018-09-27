@@ -17,8 +17,8 @@ limitations under the License.
 package module
 
 import (
-	log "github.com/cihub/seelog"
 	"github.com/xirtah/gopa-framework/core/env"
+	log "github.com/xirtah/gopa-framework/core/logger/seelog"
 )
 
 const System = "system"

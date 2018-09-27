@@ -4,10 +4,11 @@ import (
 	"bytes"
 	"encoding/gob"
 	"fmt"
-	"github.com/rs/xid"
 	"io/ioutil"
 	"sync"
 	"sync/atomic"
+
+	"github.com/rs/xid"
 )
 
 var lock sync.Mutex

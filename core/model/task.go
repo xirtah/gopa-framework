@@ -3,8 +3,8 @@ package model
 import (
 	"time"
 
-	log "github.com/cihub/seelog"
 	"github.com/xirtah/gopa-framework/core/errors"
+	log "github.com/xirtah/gopa-framework/core/logger/seelog"
 	"github.com/xirtah/gopa-framework/core/persist"
 	"github.com/xirtah/gopa-framework/core/util"
 )

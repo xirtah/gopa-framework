@@ -3,10 +3,11 @@ package config
 import (
 	"errors"
 	"fmt"
-	log "github.com/cihub/seelog"
-	"github.com/xirtah/gopa-framework/core/util"
 	"io/ioutil"
 	"path"
+
+	log "github.com/xirtah/gopa-framework/core/logger/seelog"
+	"github.com/xirtah/gopa-framework/core/util"
 )
 
 // ClusterConfig stores cluster settings
@@ -45,6 +46,8 @@ type SystemConfig struct {
 	NodeConfig NodeConfig `config:"node"`
 
 	PathConfig PathConfig `config:"path"`
+
+	LoggingConfig LoggingConfig `config:"logging"`
 
 	APIBinding     string `config:"api_bind"`
 	HTTPBinding    string `config:"http_bind"`

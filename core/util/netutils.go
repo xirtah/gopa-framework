@@ -2,10 +2,11 @@ package util
 
 import (
 	"errors"
-	log "github.com/cihub/seelog"
 	"net"
 	"strconv"
 	"strings"
+
+	log "github.com/xirtah/gopa-framework/core/logger/seelog"
 )
 
 // TestPort check port availability

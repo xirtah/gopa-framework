@@ -31,8 +31,8 @@ import (
 	"crypto/tls"
 	"fmt"
 
-	log "github.com/cihub/seelog"
 	"github.com/xirtah/gopa-framework/core/errors"
+	log "github.com/xirtah/gopa-framework/core/logger/seelog"
 	"golang.org/x/net/proxy"
 )
 

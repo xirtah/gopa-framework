@@ -24,9 +24,9 @@ import (
 	"sync"
 	"time"
 
-	log "github.com/cihub/seelog"
 	"github.com/xirtah/gopa-framework/core/errors"
 	"github.com/xirtah/gopa-framework/core/global"
+	log "github.com/xirtah/gopa-framework/core/logger/seelog"
 	"github.com/xirtah/gopa-framework/core/stats"
 	"github.com/xirtah/gopa-framework/core/util"
 )

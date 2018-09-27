@@ -1,9 +1,10 @@
 package util
 
 import (
-	log "github.com/cihub/seelog"
 	"os"
 	"path"
+
+	log "github.com/xirtah/gopa-framework/core/logger/seelog"
 )
 
 var locked bool

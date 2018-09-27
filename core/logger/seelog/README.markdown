@@ -4,7 +4,7 @@ Seelog
 Seelog is a powerful and easy-to-learn logging framework that provides functionality for flexible dispatching, filtering, and formatting log messages.
 It is natively written in the [Go](http://golang.org/) programming language. 
 
-[![Build Status](https://drone.io/github.com/cihub/seelog/status.png)](https://drone.io/github.com/cihub/seelog/latest)
+[![Build Status](https://drone.io/github.com/xirtah/gopa-framework/core/logger/seelog/status.png)](https://drone.io/github.com/xirtah/gopa-framework/core/logger/seelog/latest)
 
 Features
 ------------------
@@ -21,7 +21,7 @@ Features
   * Buffered writer (Chunk writer)
   * Rolling log writer (Logging with rotation)
   * SMTP writer
-  * Others... (See [Wiki](https://github.com/cihub/seelog/wiki))
+  * Others... (See [Wiki](https://github.com/xirtah/gopa-framework/core/logger/seelog/wiki))
 * Log message wrappers (JSON, XML, etc.)
 * Global variables and functions for easy usage in standalone apps
 * Functions for flexible usage in libraries
@@ -32,7 +32,7 @@ Quick-start
 ```go
 package main
 
-import log "github.com/cihub/seelog"
+import log "github.com/xirtah/gopa-framework/core/logger/seelog"
 
 func main() {
     defer log.Flush()
@@ -47,34 +47,34 @@ If you don't have the Go development environment installed, visit the
 [Getting Started](http://golang.org/doc/install.html) document and follow the instructions. Once you're ready, execute the following command:
 
 ```
-go get -u github.com/cihub/seelog
+go get -u github.com/xirtah/gopa-framework/core/logger/seelog
 ```
 
-*IMPORTANT*: If you are not using the latest release version of Go, check out this [wiki page](https://github.com/cihub/seelog/wiki/Notes-on-'go-get')
+*IMPORTANT*: If you are not using the latest release version of Go, check out this [wiki page](https://github.com/xirtah/gopa-framework/core/logger/seelog/wiki/Notes-on-'go-get')
 
 Documentation
 ---------------
 
-Seelog has github wiki pages, which contain detailed how-tos references: https://github.com/cihub/seelog/wiki
+Seelog has github wiki pages, which contain detailed how-tos references: https://github.com/xirtah/gopa-framework/core/logger/seelog/wiki
 
 Examples
 ---------------
 
-Seelog examples can be found here: [seelog-examples](https://github.com/cihub/seelog-examples)
+Seelog examples can be found here: [seelog-examples](https://github.com/xirtah/gopa-framework/core/logger/seelog-examples)
 
 Issues
 ---------------
 
-Feel free to push issues that could make Seelog better: https://github.com/cihub/seelog/issues
+Feel free to push issues that could make Seelog better: https://github.com/xirtah/gopa-framework/core/logger/seelog/issues
 
 Changelog
 ---------------
 * **v2.6** : Config using code and custom formatters
     * Configuration using code in addition to xml (All internal receiver/dispatcher/logger types are now exported).
-    * Custom formatters. Check [wiki](https://github.com/cihub/seelog/wiki/Custom-formatters)
+    * Custom formatters. Check [wiki](https://github.com/xirtah/gopa-framework/core/logger/seelog/wiki/Custom-formatters)
     * Bugfixes and internal improvements.
 * **v2.5** : Interaction with other systems. Part 2: custom receivers
-    * Finished custom receivers feature. Check [wiki](https://github.com/cihub/seelog/wiki/custom-receivers)
+    * Finished custom receivers feature. Check [wiki](https://github.com/xirtah/gopa-framework/core/logger/seelog/wiki/custom-receivers)
     * Added 'LoggerFromCustomReceiver'
     * Added 'LoggerFromWriterWithMinLevelAndFormat'
     * Added 'LoggerFromCustomReceiver'

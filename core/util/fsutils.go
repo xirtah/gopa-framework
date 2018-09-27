@@ -18,12 +18,13 @@ package util
 
 import (
 	"fmt"
-	log "github.com/cihub/seelog"
 	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
+
+	log "github.com/xirtah/gopa-framework/core/logger/seelog"
 )
 
 // JoinPath return joined file path

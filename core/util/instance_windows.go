@@ -1,7 +1,7 @@
 package util
 
 import (
-	log "github.com/cihub/seelog"
+	log "github.com/xirtah/gopa-framework/core/logger/seelog"
 )
 
 // CheckProcessExists check if the pid is running

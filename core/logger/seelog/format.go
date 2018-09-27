@@ -71,8 +71,8 @@ func init() {
 // of the 'format' config item. These special symbols are replaced with context values or special
 // strings when message is written to byte receiver.
 //
-// Check https://github.com/cihub/seelog/wiki/Formatting for details.
-// Full list (with descriptions) of formatters: https://github.com/cihub/seelog/wiki/Format-reference
+// Check https://github.com/xirtah/gopa-framework/core/logger/seelog/wiki/Formatting for details.
+// Full list (with descriptions) of formatters: https://github.com/xirtah/gopa-framework/core/logger/seelog/wiki/Format-reference
 //
 // FormatterFunc takes raw log message, level, log context and returns a string, number (of any type) or any object
 // that can be evaluated as string.
@@ -120,12 +120,12 @@ func errorAliasReserved(name string) error {
 // RegisterCustomFormatter needs to be called before creating a logger for it to take effect. The general recommendation
 // is to call it once in 'init' func of your application or any initializer func.
 //
-// For usage examples, check https://github.com/cihub/seelog/wiki/Custom-formatters.
+// For usage examples, check https://github.com/xirtah/gopa-framework/core/logger/seelog/wiki/Custom-formatters.
 //
 // Name must only consist of letters (unicode.IsLetter).
 //
 // Name must not be one of the already registered standard formatter names
-// (https://github.com/cihub/seelog/wiki/Format-reference) and previously registered
+// (https://github.com/xirtah/gopa-framework/core/logger/seelog/wiki/Format-reference) and previously registered
 // custom format names. To avoid any potential name conflicts (in future releases), it is recommended
 // to start your custom formatter name with a namespace (e.g. 'MyCompanySomething') or a 'Custom' keyword.
 func RegisterCustomFormatter(name string, creator FormatterFuncCreator) error {

@@ -23,10 +23,10 @@ import (
 	"strings"
 	"time"
 
-	log "github.com/cihub/seelog"
 	"github.com/elastic/go-ucfg"
 	"github.com/elastic/go-ucfg/yaml"
 	"github.com/xirtah/gopa-framework/core/config"
+	log "github.com/xirtah/gopa-framework/core/logger/seelog"
 	"github.com/xirtah/gopa-framework/core/util"
 )
 
@@ -40,8 +40,6 @@ type Env struct {
 	RuntimeConfig *config.RuntimeConfig
 
 	IsDebug bool
-
-	LoggingLevel string
 }
 
 // Environment create a new env instance from a config
@@ -84,6 +82,10 @@ var (
 			Data: "data",
 			Log:  "log",
 			Cert: "cert",
+		},
+
+		LoggingConfig: config.LoggingConfig{
+			LogLevel: "info",
 		},
 
 		APIBinding:         "127.0.0.1:8001",
@@ -214,10 +216,13 @@ func EmptyEnv() *Env {
 	return &Env{SystemConfig: &system, RuntimeConfig: &config.RuntimeConfig{}}
 }
 
+//GetStartTime returns the time the application was started
 func GetStartTime() time.Time {
 	return startTime
 }
 
+//GetAppName returns the name of the application
 func (env *Env) GetAppName() string {
+	//TODO: Rather than using the cluster name consider adding a new field in the config which is the application name
 	return env.SystemConfig.ClusterConfig.Name
 }

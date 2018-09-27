@@ -17,11 +17,12 @@ limitations under the License.
 package api
 
 import (
-	log "github.com/cihub/seelog"
-	"github.com/gorilla/sessions"
-	"github.com/xirtah/gopa-framework/core/global"
 	"net/http"
 	"sync"
+
+	"github.com/gorilla/sessions"
+	"github.com/xirtah/gopa-framework/core/global"
+	log "github.com/xirtah/gopa-framework/core/logger/seelog"
 )
 
 const sessionName string = "gopa-session"

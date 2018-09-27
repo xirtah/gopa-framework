@@ -19,11 +19,11 @@ package api
 import (
 	"encoding/json"
 
-	log "github.com/cihub/seelog"
 	"github.com/jmoiron/jsonq"
 	"github.com/xirtah/gopa-framework/core/errors"
 	"github.com/xirtah/gopa-framework/core/global"
 	"github.com/xirtah/gopa-framework/core/http/router"
+	log "github.com/xirtah/gopa-framework/core/logger/seelog"
 	"github.com/xirtah/gopa-framework/core/model"
 	"github.com/xirtah/gopa-framework/core/util"
 

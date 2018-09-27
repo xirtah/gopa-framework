@@ -21,7 +21,7 @@ import (
 	"net/http"
 	"net/url"
 
-	log "github.com/cihub/seelog"
+	log "github.com/xirtah/gopa-framework/core/logger/seelog"
 )
 
 // Post http post with a list of values
