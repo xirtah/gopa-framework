@@ -139,9 +139,16 @@ type BoolQuery struct {
 	Should  []interface{} `json:"should,omitempty"`
 }
 
+func (query *Query) SetTerm(field string, v interface{}) {
+	query.TermQuery = map[string]interface{}{}
+	query.TermQuery[field] = v
+}
+
 // Query is the root query object
 type Query struct {
-	BoolQuery *BoolQuery `json:"bool"`
+	//TODO: Clean up commented code below
+	//BoolQuery *BoolQuery `json:"bool"`
+	TermQuery map[string]interface{} `json:"term,omitempty"`
 }
 
 // SearchRequest is the root search query object
@@ -180,20 +187,14 @@ func (c *ElasticsearchClient) Index(indexName, id string, data interface{}) (*In
 	if err != nil {
 		return nil, err
 	}
-	//log.Info("1")
+
 	req := util.NewPostRequest(url, js)
-	//log.Info("2")
 	req.SetBasicAuth(c.Config.Username, c.Config.Password)
-	//log.Info("3")
 	response, err := util.ExecuteRequest(req)
-	//log.Info("4")
 	if err != nil {
-		log.Info("4e", err)
 		return nil, err
 	}
-	//log.Info("5")
 
-	//log.Info("indexing response: ", string(response.Body))
 	log.Trace("indexing response: ", string(response.Body))
 
 	esResp := &InsertResponse{}
@@ -335,7 +336,6 @@ func (c *ElasticsearchClient) SearchWithRawQueryDSL(indexName string, queryDSL [
 	}
 
 	log.Trace("search response: ", string(queryDSL), ",", string(response.Body))
-	log.Info("search response: ", string(queryDSL), ",", string(response.Body))
 
 	esResp := &SearchResponse{}
 	err = json.Unmarshal(response.Body, esResp)

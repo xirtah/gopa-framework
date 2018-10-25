@@ -64,8 +64,8 @@ func getQuery(c1 *api.Cond) interface{} {
 
 	switch c1.QueryType {
 	case api.Match:
-		q := index.MatchQuery{}
-		q.Set(c1.Field, c1.Value)
+		q := index.Query{}
+		q.SetTerm(c1.Field, c1.Value)
 		return q
 	case api.RangeGt:
 		q := index.RangeQuery{}
@@ -99,33 +99,32 @@ func (handler ElasticORM) Search(t interface{}, to interface{}, q *api.Query) (e
 	if q.Conds != nil && len(q.Conds) > 0 {
 		request.Query = &index.Query{}
 
-		boolQuery := index.BoolQuery{}
-
 		for _, c1 := range q.Conds {
-			q := getQuery(c1)
 			switch c1.BoolType {
 			case api.Must:
-				boolQuery.Must = append(boolQuery.Must, q)
+				request.Query.SetTerm(c1.Field, c1.Value)
+				//TODO: Clean up commented out code
+				//boolQuery.Must = append(boolQuery.Must, q)
 				break
 			case api.MustNot:
-				boolQuery.MustNot = append(boolQuery.MustNot, q)
+				//boolQuery.MustNot = append(boolQuery.MustNot, q)
 				break
 			case api.Should:
-				boolQuery.Should = append(boolQuery.Should, q)
+				//boolQuery.Should = append(boolQuery.Should, q)
 				break
 			}
 
 		}
 
-		request.Query.BoolQuery = &boolQuery
+		//request.Query.BoolQuery = &boolQuery
 
 	}
 
-	if q.Sort != nil && len(*q.Sort) > 0 {
-		for _, i := range *q.Sort {
-			request.AddSort(i.Field, string(i.SortType))
-		}
-	}
+	// if q.Sort != nil && len(*q.Sort) > 0 {
+	// 	for _, i := range *q.Sort {
+	// 		request.AddSort(i.Field, string(i.SortType))
+	// 	}
+	// }
 
 	result := api.Result{}
 	searchResponse, err := handler.Client.Search(getIndex(t), &request)
@@ -146,7 +145,6 @@ func (handler ElasticORM) Search(t interface{}, to interface{}, q *api.Query) (e
 }
 
 func (handler ElasticORM) GroupBy(o interface{}, selectField, groupField string, haveQuery string, haveValue interface{}) (error, map[string]interface{}) {
-	panic(errors.New("not implemented yet"))
 	result := map[string]interface{}{}
 	return nil, result
 }

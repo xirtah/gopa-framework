@@ -235,9 +235,9 @@ func GetPendingNewFetchTasks(offset time.Time) (int, []Task, error) {
 	var tasks []Task
 	sort := []persist.Sort{}
 	sort = append(sort, persist.Sort{Field: "created", SortType: persist.ASC})
+	//TODO: Remove offset from input param for function - Sameer
 	queryO := persist.Query{Sort: &sort, Conds: persist.And(
-		persist.Eq("status", TaskCreated),
-		persist.Gt("created", offset)),
+		persist.Eq("status", TaskCreated)),
 		From: 0, Size: 100}
 	err, result := persist.Search(Task{}, &tasks, &queryO)
 	if err != nil {
