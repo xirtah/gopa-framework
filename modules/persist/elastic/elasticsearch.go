@@ -5,6 +5,7 @@ import (
 	"github.com/xirtah/gopa-framework/core/index"
 	api "github.com/xirtah/gopa-framework/core/persist"
 	"github.com/xirtah/gopa-framework/core/util"
+	"fmt"
 )
 
 type ElasticORM struct {
@@ -64,7 +65,7 @@ func getQuery(c1 *api.Cond) interface{} {
 
 	switch c1.QueryType {
 	case api.Match:
-		q := index.Query{}
+		q := index.TermQuery{}
 		q.SetTerm(c1.Field, c1.Value)
 		return q
 	case api.RangeGt:
@@ -89,6 +90,9 @@ func getQuery(c1 *api.Cond) interface{} {
 
 func (handler ElasticORM) Search(t interface{}, to interface{}, q *api.Query) (error, api.Result) {
 
+	fmt.Printf("\n")
+	fmt.Printf("Q: ELASTIC ORM SEARCH - %s", q)
+	fmt.Printf("\n")
 	var err error
 
 	request := index.SearchRequest{}
@@ -98,22 +102,40 @@ func (handler ElasticORM) Search(t interface{}, to interface{}, q *api.Query) (e
 
 	if q.Conds != nil && len(q.Conds) > 0 {
 		request.Query = &index.Query{}
+		//request.Query.Bool = &index.BoolQuery{}
+		//request.Query.Bool.Filter = &index.FilterQuery{}
+		//request.Query.BoolQuery = &boolQuery
+		boolQuery := index.BoolQuery{}
+		//rangeType := index.RangeType{}
 
 		for _, c1 := range q.Conds {
 			switch c1.BoolType {
-			case api.Must:
-				request.Query.SetTerm(c1.Field, c1.Value)
-				//TODO: Clean up commented out code
-				//boolQuery.Must = append(boolQuery.Must, q)
-				break
-			case api.MustNot:
-				//boolQuery.MustNot = append(boolQuery.MustNot, q)
-				break
-			case api.Should:
-				//boolQuery.Should = append(boolQuery.Should, q)
-				break
+				case api.Must:
+					boolQuery.Filter = append(boolQuery.Filter, getQuery(c1))
+					//request.Query.Bool.Filter.SetTerm(c1.Field, c1.Value)
+					//TODO: Clean up commented out code
+					//boolQuery.Must = append(boolQuery.Must, q)
+					break
+				case api.MustNot:
+					//boolQuery.MustNot = append(boolQuery.MustNot, q)
+					break
+				case api.Should:
+					//boolQuery.Should = append(boolQuery.Should, q)
+					break
 			}
 
+			request.Query.Bool = &boolQuery
+
+			// switch c1.QueryType {
+			// 	case api.RangeGt:
+			// 		request.Query.Bool.Filter.Gt(c1.Field, c1.Value)
+			// 	case api.RangeGte:
+			// 		request.Query.Bool.Filter.Gte(c1.Field, c1.Value)
+			// 	case api.RangeLt:
+			// 		request.Query.Bool.Filter.Lt(c1.Field, c1.Value)
+			// 	case api.RangeLte:
+			// 		request.Query.Bool.Filter.Lte(c1.Field, c1.Value)
+			// }
 		}
 
 		//request.Query.BoolQuery = &boolQuery
@@ -125,6 +147,10 @@ func (handler ElasticORM) Search(t interface{}, to interface{}, q *api.Query) (e
 	// 		request.AddSort(i.Field, string(i.SortType))
 	// 	}
 	// }
+
+	fmt.Printf("\n")
+	fmt.Printf("Q: ELASTIC ORM SEARCH REQUEST - %s", request.Query)
+	fmt.Printf("\n")
 
 	result := api.Result{}
 	searchResponse, err := handler.Client.Search(getIndex(t), &request)

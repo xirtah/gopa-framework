@@ -230,12 +230,11 @@ func GetTaskList(from, size int, host string, status int) (int, []Task, error) {
 	return result.Total, tasks, err
 }
 
-func GetPendingNewFetchTasks(offset time.Time) (int, []Task, error) {
-	log.Tracef("start get pending fetch tasks,last offset: %s,", offset.String())
+func GetPendingNewFetchTasks() (int, []Task, error) {
+	log.Tracef("start get pending fetch tasks")
 	var tasks []Task
 	sort := []persist.Sort{}
 	sort = append(sort, persist.Sort{Field: "created", SortType: persist.ASC})
-	//TODO: Remove offset from input param for function - Sameer
 	queryO := persist.Query{Sort: &sort, Conds: persist.And(
 		persist.Eq("status", TaskCreated)),
 		From: 0, Size: 100}
@@ -273,16 +272,16 @@ func GetFailedTasks(offset time.Time) (int, []Task, error) {
 	return result.Total, tasks, err
 }
 
-func GetPendingUpdateFetchTasks(offset time.Time) (int, []Task, error) {
+func GetPendingUpdateFetchTasks() (int, []Task, error) {
 	t := time.Now().UTC()
-	log.Tracef("start get all tasks,last offset: %s,", offset.String())
+	log.Infof("start get all tasks")
+	log.Tracef("start get all tasks")
 	var tasks []Task
 	sort := []persist.Sort{}
 	sort = append(sort, persist.Sort{Field: "created", SortType: persist.ASC})
 	queryO := persist.Query{Sort: &sort,
 		Conds: persist.And(
 			persist.Lt("next_check", t),
-			persist.Gt("created", offset),
 			persist.Eq("status", TaskSuccess)),
 		From: 0, Size: 100,
 	}

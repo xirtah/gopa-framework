@@ -137,18 +137,44 @@ type BoolQuery struct {
 	Must    []interface{} `json:"must,omitempty"`
 	MustNot []interface{} `json:"must_not,omitempty"`
 	Should  []interface{} `json:"should,omitempty"`
+	Filter  []interface{} `json:"filter,omitempty"`
+	//Filter  *FilterQuery `json:"filter,omitempty"`
 }
 
-func (query *Query) SetTerm(field string, v interface{}) {
-	query.TermQuery = map[string]interface{}{}
-	query.TermQuery[field] = v
+// BoolQuery wrapper queries
+// type RangeType struct {
+// 	Lt []interface{} `json:"lt"`
+// 	Gt []interface{} `json:"gt"`
+// }
+
+type TermQuery struct {
+	Term map[string]interface{} `json:"term,omitempty"`
 }
+
+func (query *TermQuery) SetTerm(field string, v interface{}) {
+	query.Term = map[string]interface{}{}
+	query.Term[field] = v
+}
+
+// type FilterQuery struct {
+// 	Term map[string]interface{} `json:"term,omitempty"`
+// 	Range map[string]map[string]interface{} `json:"range,omitempty"`
+// }
+
+// func (query *Query) SetRange(field string, v interface{}) {
+
+// 	query.RangeQuery = map[string]interface{}{}
+	
+// 	query.RangeQuery[field] = v
+// }
 
 // Query is the root query object
 type Query struct {
 	//TODO: Clean up commented code below
-	//BoolQuery *BoolQuery `json:"bool"`
-	TermQuery map[string]interface{} `json:"term,omitempty"`
+	Bool *BoolQuery `json:"bool"`
+	//TermQuery map[string]interface{} `json:"term,omitempty"`
+	//Range interface{} `json:"range,omitempty"`
+	//RangeQuery *RangeQuery1 `json:"range"`
 }
 
 // SearchRequest is the root search query object
@@ -315,6 +341,8 @@ func (c *ElasticsearchClient) Search(indexName string, query *SearchRequest) (*S
 		return nil, err
 	}
 
+	//fmt.Println("Q: es query ", query)
+
 	return c.SearchWithRawQueryDSL(indexName, js)
 }
 
@@ -336,6 +364,7 @@ func (c *ElasticsearchClient) SearchWithRawQueryDSL(indexName string, queryDSL [
 	}
 
 	log.Trace("search response: ", string(queryDSL), ",", string(response.Body))
+	log.Info("search response: ", string(queryDSL), ",", string(response.Body))
 
 	esResp := &SearchResponse{}
 	err = json.Unmarshal(response.Body, esResp)
