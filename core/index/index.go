@@ -138,14 +138,7 @@ type BoolQuery struct {
 	MustNot []interface{} `json:"must_not,omitempty"`
 	Should  []interface{} `json:"should,omitempty"`
 	Filter  []interface{} `json:"filter,omitempty"`
-	//Filter  *FilterQuery `json:"filter,omitempty"`
 }
-
-// BoolQuery wrapper queries
-// type RangeType struct {
-// 	Lt []interface{} `json:"lt"`
-// 	Gt []interface{} `json:"gt"`
-// }
 
 type TermQuery struct {
 	Term map[string]interface{} `json:"term,omitempty"`
@@ -156,25 +149,9 @@ func (query *TermQuery) SetTerm(field string, v interface{}) {
 	query.Term[field] = v
 }
 
-// type FilterQuery struct {
-// 	Term map[string]interface{} `json:"term,omitempty"`
-// 	Range map[string]map[string]interface{} `json:"range,omitempty"`
-// }
-
-// func (query *Query) SetRange(field string, v interface{}) {
-
-// 	query.RangeQuery = map[string]interface{}{}
-	
-// 	query.RangeQuery[field] = v
-// }
-
 // Query is the root query object
 type Query struct {
-	//TODO: Clean up commented code below
 	Bool *BoolQuery `json:"bool"`
-	//TermQuery map[string]interface{} `json:"term,omitempty"`
-	//Range interface{} `json:"range,omitempty"`
-	//RangeQuery *RangeQuery1 `json:"range"`
 }
 
 // SearchRequest is the root search query object
@@ -207,7 +184,6 @@ func (c *ElasticsearchClient) Index(indexName, id string, data interface{}) (*In
 
 	js, err := json.Marshal(data)
 
-	//log.Info("indexing doc: ", url, ",", string(js))
 	log.Debug("indexing doc: ", url, ",", string(js))
 
 	if err != nil {
@@ -340,8 +316,6 @@ func (c *ElasticsearchClient) Search(indexName string, query *SearchRequest) (*S
 	if err != nil {
 		return nil, err
 	}
-
-	//fmt.Println("Q: es query ", query)
 
 	return c.SearchWithRawQueryDSL(indexName, js)
 }
