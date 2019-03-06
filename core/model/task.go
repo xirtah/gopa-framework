@@ -274,7 +274,6 @@ func GetFailedTasks(offset time.Time) (int, []Task, error) {
 
 func GetPendingUpdateFetchTasks() (int, []Task, error) {
 	t := time.Now().UTC()
-	log.Infof("start get all tasks")
 	log.Tracef("start get all tasks")
 	var tasks []Task
 	sort := []persist.Sort{}

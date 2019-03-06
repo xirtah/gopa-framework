@@ -1,6 +1,9 @@
 package elastic
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/xirtah/gopa-framework/core/errors"
 	"github.com/xirtah/gopa-framework/core/index"
 	api "github.com/xirtah/gopa-framework/core/persist"
@@ -61,28 +64,27 @@ func (handler ElasticORM) Count(o interface{}) (int, error) {
 }
 
 func getQuery(c1 *api.Cond) interface{} {
-
 	switch c1.QueryType {
-		case api.Match:
-			q := index.TermQuery{}
-			q.SetTerm(c1.Field, c1.Value)
-			return q
-		case api.RangeGt:
-			q := index.RangeQuery{}
-			q.Gt(c1.Field, c1.Value)
-			return q
-		case api.RangeGte:
-			q := index.RangeQuery{}
-			q.Gte(c1.Field, c1.Value)
-			return q
-		case api.RangeLt:
-			q := index.RangeQuery{}
-			q.Lt(c1.Field, c1.Value)
-			return q
-		case api.RangeLte:
-			q := index.RangeQuery{}
-			q.Lte(c1.Field, c1.Value)
-			return q
+	case api.Match:
+		q := index.TermQuery{}
+		q.SetTerm(c1.Field, c1.Value)
+		return q
+	case api.RangeGt:
+		q := index.RangeQuery{}
+		q.Gt(c1.Field, c1.Value)
+		return q
+	case api.RangeGte:
+		q := index.RangeQuery{}
+		q.Gte(c1.Field, c1.Value)
+		return q
+	case api.RangeLt:
+		q := index.RangeQuery{}
+		q.Lt(c1.Field, c1.Value)
+		return q
+	case api.RangeLte:
+		q := index.RangeQuery{}
+		q.Lte(c1.Field, c1.Value)
+		return q
 	}
 	panic(errors.Errorf("invalid query: %s", c1))
 }
@@ -102,17 +104,17 @@ func (handler ElasticORM) Search(t interface{}, to interface{}, q *api.Query) (e
 
 		for _, c1 := range q.Conds {
 			switch c1.BoolType {
-				case api.Must:
-					boolQuery.Filter = append(boolQuery.Filter, getQuery(c1))
-					//TODO: Clean up commented out code
-					//boolQuery.Must = append(boolQuery.Must, q)
-					break
-				case api.MustNot:
-					//boolQuery.MustNot = append(boolQuery.MustNot, q)
-					break
-				case api.Should:
-					//boolQuery.Should = append(boolQuery.Should, q)
-					break
+			case api.Must:
+				boolQuery.Filter = append(boolQuery.Filter, getQuery(c1))
+				//TODO: Clean up commented out code
+				//boolQuery.Must = append(boolQuery.Must, q)
+				break
+			case api.MustNot:
+				//boolQuery.MustNot = append(boolQuery.MustNot, q)
+				break
+			case api.Should:
+				//boolQuery.Should = append(boolQuery.Should, q)
+				break
 			}
 
 			request.Query.Bool = &boolQuery
@@ -137,7 +139,52 @@ func (handler ElasticORM) Search(t interface{}, to interface{}, q *api.Query) (e
 	return err, result
 }
 
+//TODO: Clean up this function, it is quite hacky at the moment
 func (handler ElasticORM) GroupBy(o interface{}, selectField, groupField string, haveQuery string, haveValue interface{}) (error, map[string]interface{}) {
+
+	request := index.SearchRequest{}
+
+	request.Aggs = &index.Aggs{}
+	request.Size = 0
+	aggs := index.Aggs{}
+	q := index.TermsQuery{}
+	q.SetTerm("field", selectField)
+
+	//HACK
+	if haveValue != nil {
+		s := strings.Split(haveQuery, " ")
+		request.Query = &index.Query{}
+		request.Query.Bool = &index.BoolQuery{}
+		q1 := index.TermQuery{}
+		q1.SetTerm(s[0], haveValue)
+		request.Query.Bool.Filter = append(request.Query.Bool.Filter, q1)
+	}
+	//END HACK
+
+	aggs.Terms = &q
+	request.Aggs = &aggs
+
+	searchResponse, err := handler.Client.Search(getIndex(o), &request)
+
 	result := map[string]interface{}{}
-	return nil, result
+
+	for _, doc := range searchResponse.Aggregations {
+		for _, dock := range doc.Buckets {
+
+			var slc string
+			switch v := dock.Key.(type) {
+			case string:
+				slc = v
+			case fmt.Stringer:
+				slc = v.String()
+			default:
+				slc = fmt.Sprintf("%v", v)
+			}
+
+			result[slc] = dock.DocCount
+
+		}
+	}
+
+	return err, result
 }

@@ -144,19 +144,35 @@ type TermQuery struct {
 	Term map[string]interface{} `json:"term,omitempty"`
 }
 
+type TermsQuery struct {
+	Terms map[string]interface{} `json:"terms,omitempty"`
+	Aggs  *Aggs                  `json:"aggs,omitempty"`
+}
+
 func (query *TermQuery) SetTerm(field string, v interface{}) {
 	query.Term = map[string]interface{}{}
 	query.Term[field] = v
 }
 
+func (query *TermsQuery) SetTerm(field string, v interface{}) {
+	query.Terms = map[string]interface{}{}
+	query.Terms[field] = v
+}
+
 // Query is the root query object
 type Query struct {
-	Bool *BoolQuery `json:"bool"`
+	Bool *BoolQuery `json:"bool,omitempty"`
+}
+
+//aggregations
+type Aggs struct {
+	Terms *TermsQuery `json:"q,omitempty"`
 }
 
 // SearchRequest is the root search query object
 type SearchRequest struct {
 	Query *Query         `json:"query,omitempty"`
+	Aggs  *Aggs          `json:"aggs,omitempty"`
 	From  int            `json:"from"`
 	Size  int            `json:"size"`
 	Sort  *[]interface{} `json:"sort,omitempty"`
@@ -307,9 +323,6 @@ func (c *ElasticsearchClient) Search(indexName string, query *SearchRequest) (*S
 
 	if query.From < 0 {
 		query.From = 0
-	}
-	if query.Size <= 0 {
-		query.Size = 10
 	}
 
 	js, err := json.Marshal(query)
