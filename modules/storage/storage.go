@@ -17,12 +17,8 @@ limitations under the License.
 package storage
 
 import (
-	"os"
-	"path"
-
 	"github.com/xirtah/gopa-framework/core/config"
 	"github.com/xirtah/gopa-framework/core/errors"
-	"github.com/xirtah/gopa-framework/core/global"
 	"github.com/xirtah/gopa-framework/core/index"
 	"github.com/xirtah/gopa-framework/core/persist"
 	"github.com/xirtah/gopa-framework/modules/storage/boltdb"
@@ -76,15 +72,15 @@ func (module StorageModule) Start(cfg *config.Config) {
 		handler := elastic.ElasticStore{Client: &client}
 		persist.RegisterKVHandler(handler)
 	//TODO: Consider removing boltdb as a storage module driver as it does not support concurrent connections
-	case "boltdb":
-		folder := path.Join(global.Env().SystemConfig.GetWorkingDir(), "blob")
-		os.MkdirAll(folder, 0777)
-		impl = boltdb.BoltdbStore{FileName: path.Join(folder, "/bolt.db")}
-		err := impl.Open()
-		if err != nil {
-			panic(err)
-		}
-		persist.RegisterKVHandler(impl)
+	// case "boltdb":
+	// 	folder := path.Join(global.Env().SystemConfig.GetWorkingDir(), "blob")
+	// 	os.MkdirAll(folder, 0777)
+	// 	impl = boltdb.BoltdbStore{FileName: path.Join(folder, "/bolt.db")}
+	// 	err := impl.Open()
+	// 	if err != nil {
+	// 		panic(err)
+	// 	}
+	// 	persist.RegisterKVHandler(impl)
 	default:
 		panic(errors.Errorf("invalid driver, %s", config.Driver))
 	}

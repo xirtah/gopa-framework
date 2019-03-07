@@ -201,6 +201,7 @@ func (c *ElasticsearchClient) Index(indexName, id string, data interface{}) (*In
 	js, err := json.Marshal(data)
 
 	log.Debug("indexing doc: ", url, ",", string(js))
+	//log.Info("indexing doc: ", url, ",", string(js))
 
 	if err != nil {
 		return nil, err
@@ -214,6 +215,7 @@ func (c *ElasticsearchClient) Index(indexName, id string, data interface{}) (*In
 	}
 
 	log.Trace("indexing response: ", string(response.Body))
+	//log.Info("indexing response: ", string(response.Body))
 
 	esResp := &InsertResponse{}
 	err = json.Unmarshal(response.Body, esResp)
@@ -351,7 +353,6 @@ func (c *ElasticsearchClient) SearchWithRawQueryDSL(indexName string, queryDSL [
 	}
 
 	log.Trace("search response: ", string(queryDSL), ",", string(response.Body))
-	log.Info("search response: ", string(queryDSL), ",", string(response.Body))
 
 	esResp := &SearchResponse{}
 	err = json.Unmarshal(response.Body, esResp)
