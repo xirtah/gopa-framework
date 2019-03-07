@@ -21,11 +21,10 @@ import (
 	"github.com/xirtah/gopa-framework/core/errors"
 	"github.com/xirtah/gopa-framework/core/index"
 	"github.com/xirtah/gopa-framework/core/persist"
-	"github.com/xirtah/gopa-framework/modules/storage/boltdb"
 	"github.com/xirtah/gopa-framework/modules/storage/elastic"
 )
 
-var impl boltdb.BoltdbStore
+//var impl boltdb.BoltdbStore
 
 func (this StorageModule) Name() string {
 	return "Storage"
@@ -38,15 +37,15 @@ type BoltdbConfig struct {
 
 type StorageConfig struct {
 	//Driver only `boltdb` and `elasticsearch` are available
-	Driver  string                     `config:"driver"`
-	Boltdb  *BoltdbConfig              `config:"boltdb"`
+	Driver string `config:"driver"`
+	//Boltdb  *BoltdbConfig              `config:"boltdb"`
 	Elastic *index.ElasticsearchConfig `config:"elasticsearch"`
 }
 
 var (
 	defaultConfig = StorageConfig{
-		Driver: "boltdb",
-		Boltdb: &BoltdbConfig{},
+		Driver: "elastisearch",
+		//Boltdb: &BoltdbConfig{},
 		Elastic: &index.ElasticsearchConfig{
 			Endpoint:    "http://localhost:9200",
 			IndexPrefix: "gopa-", //TODO: Add support for elasticsearch credentials
