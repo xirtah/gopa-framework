@@ -37,6 +37,7 @@ func (handler ElasticORM) Get(o interface{}) error {
 func (handler ElasticORM) GetBy(field string, value interface{}, t interface{}, to interface{}) (error, api.Result) {
 
 	query := api.Query{}
+	query.Size = 1 //only return the first result -- TODO: Confirm if it is okay to only return 1 result - LZRBEAR
 	query.Conds = api.And(api.Eq(field, value))
 	return handler.Search(t, to, &query)
 }
