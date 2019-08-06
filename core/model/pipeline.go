@@ -427,13 +427,15 @@ func (pipe *Pipeline) Run() *Context {
 			stats.Increment(pipe.name+".pipeline", "error")
 			log.Debugf("%s-%s: %v", pipe.name, v.Name(), err)
 
-			//TODO catch error
-			pipe.context.Payload = err.Error()
+			pipe.context.Set(CONTEXT_TASK_Status, TaskFailed) //Mark task as failed if there are any error executing the pipeline.
+			pipe.context.Set(CONTEXT_TASK_Message, err.Error())
+			
+			pipe.context.Payload = err.Error() //TODO: Determine what this does - Sameer
 			return pipe.context
 		}
 		log.Trace(pipe.name, ", end joint,", v.Name())
 	}
-
+	
 	return pipe.context
 }
 
