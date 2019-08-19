@@ -280,8 +280,7 @@ func GetPendingUpdateFetchTasks() (int, []Task, error) {
 	sort = append(sort, persist.Sort{Field: "created", SortType: persist.ASC})
 	queryO := persist.Query{Sort: &sort,
 		Conds: persist.And(
-			persist.Lt("next_check", t),
-			persist.Eq("status", TaskSuccess)),
+			persist.Lt("next_check", t)),
 		From: 0, Size: 100,
 	}
 	err, result := persist.Search(Task{}, &tasks, &queryO)
