@@ -68,6 +68,7 @@ type QueryType string
 const Must BoolType = "must"
 const MustNot BoolType = "must_not"
 const Should BoolType = "should"
+const Filter BoolType = "filter"
 
 const Match QueryType = "match"
 const RangeGt QueryType = "gt"
@@ -81,7 +82,7 @@ func Eq(field string, value interface{}) *Cond {
 	c.Value = value
 	c.SQLOperator = " = "
 	c.QueryType = Match
-	c.BoolType = Must
+	c.BoolType = Filter
 	return &c
 }
 
@@ -101,7 +102,7 @@ func Gt(field string, value interface{}) *Cond {
 	c.Value = value
 	c.SQLOperator = " > "
 	c.QueryType = RangeGt
-	c.BoolType = Must
+	c.BoolType = Filter
 	return &c
 }
 
@@ -111,7 +112,7 @@ func Lt(field string, value interface{}) *Cond {
 	c.Value = value
 	c.SQLOperator = " < "
 	c.QueryType = RangeLt
-	c.BoolType = Must
+	c.BoolType = Filter
 	return &c
 }
 
@@ -121,7 +122,7 @@ func Ge(field string, value interface{}) *Cond {
 	c.Value = value
 	c.SQLOperator = " >= "
 	c.QueryType = RangeGte
-	c.BoolType = Must
+	c.BoolType = Filter
 	return &c
 }
 
@@ -131,7 +132,7 @@ func Le(field string, value interface{}) *Cond {
 	c.Value = value
 	c.SQLOperator = " <= "
 	c.QueryType = RangeLte
-	c.BoolType = Must
+	c.BoolType = Filter
 	return &c
 }
 

@@ -106,15 +106,18 @@ func (handler ElasticORM) Search(t interface{}, to interface{}, q *api.Query) (e
 		for _, c1 := range q.Conds {
 			switch c1.BoolType {
 			case api.Must:
-				boolQuery.Filter = append(boolQuery.Filter, getQuery(c1))
+				//boolQuery.Filter = append(boolQuery.Filter, getQuery(c1))
 				//TODO: Clean up commented out code
-				//boolQuery.Must = append(boolQuery.Must, q)
+				boolQuery.Must = append(boolQuery.Must, getQuery(c1))
 				break
 			case api.MustNot:
-				//boolQuery.MustNot = append(boolQuery.MustNot, q)
+				boolQuery.MustNot = append(boolQuery.MustNot, getQuery(c1))
 				break
 			case api.Should:
 				//boolQuery.Should = append(boolQuery.Should, q)
+				break
+			case api.Filter:
+				boolQuery.Filter = append(boolQuery.Filter, getQuery(c1))
 				break
 			}
 
