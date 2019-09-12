@@ -281,7 +281,8 @@ func GetPendingUpdateFetchTasks() (int, []Task, error) {
 	queryO := persist.Query{Sort: &sort,
 		Conds: persist.And(
 			persist.Lt("next_check", t),
-			persist.NotEq("status", TaskDuplicated)),
+			persist.NotEq("status", TaskDuplicated),
+			persist.NotEq("status", TaskRedirected)),
 		From: 0, Size: 100,
 	}
 	err, result := persist.Search(Task{}, &tasks, &queryO)
